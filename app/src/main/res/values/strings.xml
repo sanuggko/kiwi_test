@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Kiwi Test</string>
+    <string name="action_settings">Settings</string>
+    <string name="profile_title">Profile</string>
+    <string name="loading_str">Loading…</string>
+
+    <string name="facebook_app_id">498532377183889</string>
+    <string name="fb_login_protocol_scheme">fb498532377183889</string>
+    <string name="log_out_str">Logout</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="ok_str">yes</string>
+    <string name="no_str">no</string>
+
+    <string name="avatar_url_template" formatted="false" translatable="false">http://graph.facebook.com/%s/picture?type=large</string>
+
+</resources>

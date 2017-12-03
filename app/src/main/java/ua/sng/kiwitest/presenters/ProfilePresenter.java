@@ -94,6 +94,29 @@ public class ProfilePresenter extends BasePresenter<ProfileView> {
 //        request.executeAsync();
     }
 
+    public void getPhotosByAlbum(String albums){
+
+        //for get albums (curl -i -X GET \
+        //"https://graph.facebook.com/v2.11/me?fields=albums.fields(cover_photo.fields(source))"
+
+
+
+//        GraphRequest request = GraphRequest.newGraphPathRequest(
+//                accessToken,
+//                "/957339981085278/photos",
+//                new GraphRequest.Callback() {
+//                    @Override
+//                    public void onCompleted(GraphResponse response) {
+//                        // Insert your code here
+//                    }
+//                });
+//
+//        Bundle parameters = new Bundle();
+//        parameters.putString("fields", "source,name,place,created_time,picture,likes.fields(name,created_time)");
+//        request.setParameters(parameters);
+//        request.executeAsync();
+    }
+
     @Override
     protected void cancel() {
         if(compositeDisposable != null

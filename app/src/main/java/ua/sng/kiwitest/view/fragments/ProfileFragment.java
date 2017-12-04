@@ -95,6 +95,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     private void openAlbumPhotoList(String albumId){
         showToast(albumId);
+        ((BaseActivity) getActivity()).showFragment(R.id.main_fragment_container, new PhotoListFragment(), false);
     }
 
     @Override

@@ -12,6 +12,7 @@ import ua.sng.kiwitest.utils.ConnectionDetector;
 import ua.sng.kiwitest.utils.SharedPreferencesManager;
 import ua.sng.kiwitest.view.activities.AuthorizationActivity;
 import ua.sng.kiwitest.view.activities.MainActivity;
+import ua.sng.kiwitest.view.fragments.PhotoListFragment;
 import ua.sng.kiwitest.view.fragments.ProfileFragment;
 
 @Singleton
@@ -20,6 +21,7 @@ public interface ApplicationComponent {
     void inject(MainActivity mainActivity);
     void inject(AuthorizationActivity authorizationActivity);
     void inject(ProfileFragment profileFragment);
+    void inject(PhotoListFragment photoListFragment);
 
     Context context();
     SharedPreferencesManager sharedPreferencesManager();

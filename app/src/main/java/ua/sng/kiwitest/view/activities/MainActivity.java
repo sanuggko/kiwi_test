@@ -37,6 +37,7 @@ public class MainActivity extends BaseActivity implements FragmentManager.OnBack
 
         if(AccessToken.getCurrentAccessToken() == null){
             startAuthActivity();
+            return;
         }
 
         setupDefaultValues();
@@ -125,5 +126,11 @@ public class MainActivity extends BaseActivity implements FragmentManager.OnBack
     public void onBackStackChanged() {
         currentFragment = (BaseFragment) fragmentManager.findFragmentById(R.id.main_fragment_container);
         setToolbarTitle(currentFragment.getTitle());
+
+        if(getSupportActionBar() != null){
+            getSupportActionBar()
+                    .setDisplayHomeAsUpEnabled(fragmentManager.getBackStackEntryCount() > 1);
+        }
+
     }
 }

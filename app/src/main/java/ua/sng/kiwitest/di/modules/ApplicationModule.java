@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import ua.sng.kiwitest.application.KiwiApplication;
+import ua.sng.kiwitest.utils.ConnectionDetector;
 
 /**
  * Created by Oleksandr on 03.10.2017.
@@ -25,5 +26,11 @@ public class ApplicationModule {
     @Singleton
     Context provideApplicationContext(){
         return context;
+    }
+
+    @Provides
+    @Singleton
+    ConnectionDetector provideConnectionDetector(Context context){
+        return new ConnectionDetector(context);
     }
 }

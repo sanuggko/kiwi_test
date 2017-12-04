@@ -1,4 +1,4 @@
-package ua.sng.kiwitest.model.entities;
+package ua.sng.kiwitest.model.entities.profile;
 
 import com.google.gson.annotations.SerializedName;
 

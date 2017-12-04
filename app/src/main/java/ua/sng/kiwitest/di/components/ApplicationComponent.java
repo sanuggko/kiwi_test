@@ -8,6 +8,7 @@ import dagger.Component;
 import ua.sng.kiwitest.di.modules.ApplicationModule;
 import ua.sng.kiwitest.di.modules.NetworkModule;
 import ua.sng.kiwitest.model.network.ApiRequestService;
+import ua.sng.kiwitest.utils.ConnectionDetector;
 import ua.sng.kiwitest.utils.SharedPreferencesManager;
 import ua.sng.kiwitest.view.activities.AuthorizationActivity;
 import ua.sng.kiwitest.view.activities.MainActivity;
@@ -23,4 +24,5 @@ public interface ApplicationComponent {
     Context context();
     SharedPreferencesManager sharedPreferencesManager();
     ApiRequestService apiRequestService();
+    ConnectionDetector connectionDetector();
 }

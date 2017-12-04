@@ -1,6 +1,9 @@
 package ua.sng.kiwitest.view.fragments.views;
 
-import ua.sng.kiwitest.model.entities.ProfileModel;
+import java.util.ArrayList;
+
+import ua.sng.kiwitest.model.entities.album.AlbumModel;
+import ua.sng.kiwitest.model.entities.profile.ProfileModel;
 import ua.sng.kiwitest.view.BaseView;
 
 /**
@@ -9,4 +12,5 @@ import ua.sng.kiwitest.view.BaseView;
 
 public interface ProfileView extends BaseView {
     void onProfileLoaded(ProfileModel profileModel);
+    void onAlbumsLoaded(ArrayList<AlbumModel> albumModels);
 }

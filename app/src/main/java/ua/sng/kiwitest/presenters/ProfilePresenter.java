@@ -8,8 +8,12 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import ua.sng.kiwitest.model.entities.ProfileModel;
+import ua.sng.kiwitest.model.entities.album.AlbumDataModel;
+import ua.sng.kiwitest.model.entities.album.AlbumResponseModel;
+import ua.sng.kiwitest.model.entities.profile.ProfileModel;
 import ua.sng.kiwitest.model.network.ApiRequestService;
+import ua.sng.kiwitest.model.network.NetworkUrls;
+import ua.sng.kiwitest.utils.ConnectionDetector;
 import ua.sng.kiwitest.view.fragments.views.ProfileView;
 
 /**
@@ -18,56 +22,61 @@ import ua.sng.kiwitest.view.fragments.views.ProfileView;
 
 public class ProfilePresenter extends BasePresenter<ProfileView> {
 
-    @Inject
-    ApiRequestService apiRequestService;
-
+    private ApiRequestService apiRequestService;
+    private ConnectionDetector connectionDetector;
     private CompositeDisposable compositeDisposable;
 
     @Inject
-    public ProfilePresenter() {
+    public ProfilePresenter(ApiRequestService apiRequestService, ConnectionDetector connectionDetector) {
+        this.apiRequestService = apiRequestService;
+        this.connectionDetector = connectionDetector;
         this.compositeDisposable = new CompositeDisposable();
     }
 
     public void loadUserInfo() {
-        getView().showLoading();
 
-        apiRequestService
-                .getUserProfile("id,name,email,birthday,gender")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<ProfileModel>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        if(compositeDisposable != null){
-                            compositeDisposable.add(d);
-                        }
-                    }
+        if(connectionDetector.isConnectionToInternet()) {
+            getView().showLoading();
 
-                    @Override
-                    public void onNext(Response<ProfileModel> profileModelResponse) {
-                        if(getView() != null){
-                            if(profileModelResponse.isSuccessful()){
-                                getView().onProfileLoaded(profileModelResponse.body());
+            apiRequestService
+                    .getUserProfile(NetworkUrls.USER_PROFILE_FIELDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Response<ProfileModel>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            if (compositeDisposable != null) {
+                                compositeDisposable.add(d);
                             }
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        if(getView() != null){
-                            getView().hideLoading();
-                            getView().showErrorMessage(e.getLocalizedMessage());
+                        @Override
+                        public void onNext(Response<ProfileModel> profileModelResponse) {
+                            if (getView() != null) {
+                                if (profileModelResponse.isSuccessful()) {
+                                    getView().onProfileLoaded(profileModelResponse.body());
+                                }
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onComplete() {
-                        if(getView() != null){
-                            getView().hideLoading();
+                        @Override
+                        public void onError(Throwable e) {
+                            if (getView() != null) {
+                                getView().hideLoading();
+                                getView().showErrorMessage(e.getLocalizedMessage());
+                            }
                         }
-                    }
-                });
 
+                        @Override
+                        public void onComplete() {
+                            if (getView() != null) {
+                                getView().hideLoading();
+                            }
+                        }
+                    });
+        } else {
+            getView().showNoConnectionMessage();
+        }
 //        GraphRequest request = GraphRequest.newMeRequest(
 //                AccessToken.getCurrentAccessToken(),
 //                (object, response) -> {
@@ -92,6 +101,59 @@ public class ProfilePresenter extends BasePresenter<ProfileView> {
 //
 //        request.setParameters(parameters);
 //        request.executeAsync();
+    }
+
+    public void getUserAlbumList(){
+        if(connectionDetector.isConnectionToInternet()){
+            getView().showLoading();
+
+            apiRequestService
+                    .getUserAlbumsList(NetworkUrls.ALBUMS_FIELDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Response<AlbumResponseModel>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            if(compositeDisposable != null){
+                                compositeDisposable.add(d);
+                            }
+                        }
+
+                        @Override
+                        public void onNext(Response<AlbumResponseModel> profileModelResponse) {
+                            if(getView() != null){
+                                if(profileModelResponse.isSuccessful()){
+                                    AlbumResponseModel albumResponseModel = profileModelResponse.body();
+
+                                    if(albumResponseModel != null){
+                                        AlbumDataModel albumDataModel = albumResponseModel.getAlbumDataModel();
+
+                                        if(albumDataModel != null){
+                                            getView().onAlbumsLoaded(albumDataModel.getAlbumModels());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if(getView() != null){
+                                getView().hideLoading();
+                                getView().showErrorMessage(e.getLocalizedMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            if(getView() != null){
+                                getView().hideLoading();
+                            }
+                        }
+                    });
+        } else {
+            getView().showNoConnectionMessage();
+        }
     }
 
     public void getPhotosByAlbum(String albums){

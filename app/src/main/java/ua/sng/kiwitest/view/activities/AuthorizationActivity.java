@@ -33,7 +33,7 @@ public class AuthorizationActivity extends BaseActivity implements Authorization
     AuthorizationPresenter presenter;
 
     private MaterialDialog progressDialog;
-    private List<String> permissionNeeds= Arrays.asList("email", "user_birthday", "user_friends");
+    private List<String> permissionNeeds= Arrays.asList("email", "user_birthday", "user_friends", "user_photos");
 
     private CallbackManager callbackManager;
 

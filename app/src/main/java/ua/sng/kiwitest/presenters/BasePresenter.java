@@ -12,8 +12,8 @@ public abstract class BasePresenter<T> {
         this.view = view;
     }
 
-    protected abstract void cancel();
+    public abstract void cancel();
 
-    protected abstract void destroy();
+    public abstract void destroy();
 
 }

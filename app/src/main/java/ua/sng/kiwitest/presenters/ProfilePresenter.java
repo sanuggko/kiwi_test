@@ -9,7 +9,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import ua.sng.kiwitest.model.entities.album.AlbumDataModel;
-import ua.sng.kiwitest.model.entities.album.AlbumResponseModel;
 import ua.sng.kiwitest.model.entities.profile.ProfileModel;
 import ua.sng.kiwitest.model.network.ApiRequestService;
 import ua.sng.kiwitest.model.network.NetworkUrls;
@@ -35,7 +34,7 @@ public class ProfilePresenter extends BasePresenter<ProfileView> {
 
     public void loadUserInfo() {
 
-        if(connectionDetector.isConnectionToInternet()) {
+        if (connectionDetector.isConnectionToInternet()) {
             getView().showLoading();
 
             apiRequestService
@@ -77,60 +76,32 @@ public class ProfilePresenter extends BasePresenter<ProfileView> {
         } else {
             getView().showNoConnectionMessage();
         }
-//        GraphRequest request = GraphRequest.newMeRequest(
-//                AccessToken.getCurrentAccessToken(),
-//                (object, response) -> {
-//                    if(getView() != null) {
-//                        getView().hideLoading();
-//
-//                        if (response.getError() != null) {
-//                            getView().showErrorMessage(response.getError().getErrorMessage());
-//                        } else {
-//                            String profileJson = response.getJSONObject().toString();
-//                            ProfileModel profileModel = new Gson().fromJson(profileJson, ProfileModel.class);
-//
-//                            if(profileModel != null){
-//                                getView().onProfileLoaded(profileModel);
-//                            }
-//                        }
-//                    }
-//                });
-//
-//        Bundle parameters = new Bundle();
-//        parameters.putString("fields", "id,name,email,birthday,gender");
-//
-//        request.setParameters(parameters);
-//        request.executeAsync();
     }
 
-    public void getUserAlbumList(){
-        if(connectionDetector.isConnectionToInternet()){
+    public void getUserAlbumList() {
+        if (connectionDetector.isConnectionToInternet()) {
             getView().showLoading();
 
             apiRequestService
                     .getUserAlbumsList(NetworkUrls.ALBUMS_FIELDS)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Response<AlbumResponseModel>>() {
+                    .subscribe(new Observer<Response<AlbumDataModel>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-                            if(compositeDisposable != null){
+                            if (compositeDisposable != null) {
                                 compositeDisposable.add(d);
                             }
                         }
 
                         @Override
-                        public void onNext(Response<AlbumResponseModel> profileModelResponse) {
-                            if(getView() != null){
-                                if(profileModelResponse.isSuccessful()){
-                                    AlbumResponseModel albumResponseModel = profileModelResponse.body();
+                        public void onNext(Response<AlbumDataModel> profileModelResponse) {
+                            if (getView() != null) {
+                                if (profileModelResponse.isSuccessful()) {
+                                    AlbumDataModel albumDataModel = profileModelResponse.body();
 
-                                    if(albumResponseModel != null){
-                                        AlbumDataModel albumDataModel = albumResponseModel.getAlbumDataModel();
-
-                                        if(albumDataModel != null){
-                                            getView().onAlbumsLoaded(albumDataModel.getAlbumModels());
-                                        }
+                                    if (albumDataModel != null) {
+                                        getView().onAlbumsLoaded(albumDataModel.getAlbumModels());
                                     }
                                 }
                             }
@@ -138,7 +109,7 @@ public class ProfilePresenter extends BasePresenter<ProfileView> {
 
                         @Override
                         public void onError(Throwable e) {
-                            if(getView() != null){
+                            if (getView() != null) {
                                 getView().hideLoading();
                                 getView().showErrorMessage(e.getLocalizedMessage());
                             }
@@ -146,7 +117,7 @@ public class ProfilePresenter extends BasePresenter<ProfileView> {
 
                         @Override
                         public void onComplete() {
-                            if(getView() != null){
+                            if (getView() != null) {
                                 getView().hideLoading();
                             }
                         }
@@ -156,39 +127,16 @@ public class ProfilePresenter extends BasePresenter<ProfileView> {
         }
     }
 
-    public void getPhotosByAlbum(String albums){
-
-        //for get albums (curl -i -X GET \
-        //"https://graph.facebook.com/v2.11/me?fields=albums.fields(cover_photo.fields(source))"
-
-
-
-//        GraphRequest request = GraphRequest.newGraphPathRequest(
-//                accessToken,
-//                "/957339981085278/photos",
-//                new GraphRequest.Callback() {
-//                    @Override
-//                    public void onCompleted(GraphResponse response) {
-//                        // Insert your code here
-//                    }
-//                });
-//
-//        Bundle parameters = new Bundle();
-//        parameters.putString("fields", "source,name,place,created_time,picture,likes.fields(name,created_time)");
-//        request.setParameters(parameters);
-//        request.executeAsync();
-    }
-
     @Override
-    protected void cancel() {
-        if(compositeDisposable != null
-                && !compositeDisposable.isDisposed()){
+    public void cancel() {
+        if (compositeDisposable != null
+                && !compositeDisposable.isDisposed()) {
             compositeDisposable.dispose();
         }
     }
 
     @Override
-    protected void destroy() {
+    public void destroy() {
         compositeDisposable = null;
         apiRequestService = null;
     }

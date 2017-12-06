@@ -40,7 +40,9 @@ public class MainActivity extends BaseActivity implements FragmentManager.OnBack
             return;
         }
 
-        setupDefaultValues();
+        if(savedInstanceState == null) {
+            setupDefaultValues();
+        }
     }
 
     private void setupDefaultValues(){
@@ -101,6 +103,9 @@ public class MainActivity extends BaseActivity implements FragmentManager.OnBack
         switch (item.getItemId()){
             case R.id.action_log_out:
                 logout();
+                break;
+            case android.R.id.home:
+                onBackPressed();
                 break;
         }
 

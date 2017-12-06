@@ -15,5 +15,6 @@
     <string name="photo_url_template" formatted="false" translatable="false">http://graph.facebook.com/%s/picture</string>
     <string name="albums_label">Albums:</string>
     <string name="photos_count_template" formatted="false">Photos count: %d</string>
+    <string name="photos_title">Photos</string>
 
 </resources>

@@ -8,15 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.lang.annotation.Annotation;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ua.sng.kiwitest.utils.Layout;
+import ua.sng.kiwitest.utils.viewutils.KiwiViewUtils;
 
 public abstract class BaseFragment extends Fragment {
 
     private Unbinder unbinder;
+    private MaterialDialog progressDialog;
 
     @Nullable
     @Override
@@ -38,24 +42,32 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        unbinder.unbind();
-        unbinder = null;
-        super.onDestroyView();
-    }
-
     public abstract String getTitle();
-
-    public String getFragmentName(){
-        return BaseFragment.class.getSimpleName();
-    }
 
     protected abstract void inject();
 
     protected abstract void setupInOnCreateView();
 
+    public MaterialDialog getProgressDialog() {
+        if(progressDialog == null){
+            progressDialog = KiwiViewUtils.generateProgressDialog(getActivity());
+        }
+
+        return progressDialog;
+    }
+
+    public String getFragmentName(){
+        return BaseFragment.class.getSimpleName();
+    }
+
     public void showToast(String message){
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        unbinder = null;
+        super.onDestroyView();
     }
 }

@@ -6,8 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -21,7 +19,6 @@ import ua.sng.kiwitest.utils.DpPxUtils;
 import ua.sng.kiwitest.utils.GlideApp;
 import ua.sng.kiwitest.utils.Layout;
 import ua.sng.kiwitest.utils.viewutils.ItemDecorationAlbumColumns;
-import ua.sng.kiwitest.utils.viewutils.KiwiViewUtils;
 import ua.sng.kiwitest.view.activities.BaseActivity;
 import ua.sng.kiwitest.view.adapters.AlbumsAdapter;
 import ua.sng.kiwitest.view.fragments.views.ProfileView;
@@ -52,7 +49,6 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     AlbumsAdapter albumsAdapter;
 
     private ProfileModel profileModel;
-    private MaterialDialog progressDialog;
 
     @Override
     protected void setupInOnCreateView() {
@@ -61,7 +57,6 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     }
 
     private void setupDefaultValues() {
-        progressDialog = KiwiViewUtils.generateProgressDialog(getActivity());
         presenter.setView(this);
 
         presenter.loadUserInfo();
@@ -76,7 +71,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
         albumsRV.setAdapter(albumsAdapter);
 
         albumsAdapter.setItemClickListener(albumModel -> {
-            openAlbumPhotoList(albumModel.getAlbumId());
+            openAlbumPhotoList(albumModel.getAlbumId(), albumModel.getName());
         });
     }
 
@@ -93,10 +88,14 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
         }
     }
 
-    private void openAlbumPhotoList(String albumId){
-        showToast(albumId);
-        ((BaseActivity) getActivity())
-                .showFragment(R.id.main_fragment_container, new PhotoListFragment(), false);
+    private void openAlbumPhotoList(String albumId, String albumTitle){
+        if(getActivity() != null){
+            PhotoListFragment photoListFragment = PhotoListFragment.newInstance(albumId, albumTitle);
+
+            ((BaseActivity) getActivity())
+                    .showFragment(R.id.main_fragment_container, photoListFragment, false);
+        }
+
     }
 
     @Override
@@ -114,15 +113,15 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     @Override
     public void showLoading() {
-        if(progressDialog != null && !progressDialog.isShowing()){
-            progressDialog.show();
+        if(!getProgressDialog().isShowing()){
+            getProgressDialog().show();
         }
     }
 
     @Override
     public void hideLoading() {
-        if(progressDialog != null){
-            progressDialog.dismiss();
+        if(getProgressDialog() != null){
+            getProgressDialog().dismiss();
         }
     }
 
@@ -147,5 +146,15 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     @Override
     public void showNoConnectionMessage() {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if(presenter != null){
+            presenter.cancel();
+            presenter.destroy();
+        }
     }
 }

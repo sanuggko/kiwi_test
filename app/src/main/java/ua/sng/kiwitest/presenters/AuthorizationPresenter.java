@@ -43,11 +43,11 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
     }
 
     @Override
-    protected void cancel() {
+    public void cancel() {
 
     }
 
     @Override
-    protected void destroy() {
+    public void destroy() {
     }
 }

@@ -36,7 +36,7 @@ public class AuthorizationActivity extends BaseActivity implements Authorization
     AuthorizationPresenter presenter;
 
     private MaterialDialog progressDialog;
-    private List<String> permissionNeeds= Arrays.asList("email", "user_birthday", "user_friends", "user_photos");
+    private List<String> permissionNeeds = Arrays.asList("email", "user_birthday", "user_friends", "user_photos");
 
     private CallbackManager callbackManager;
 
@@ -48,17 +48,17 @@ public class AuthorizationActivity extends BaseActivity implements Authorization
         copyToClipBoardTestEmail();
     }
 
-    private void setupDefaultValues(){
+    private void setupDefaultValues() {
         callbackManager = CallbackManager.Factory.create();
         progressDialog = KiwiViewUtils.generateProgressDialog(this);
         presenter.setView(this);
     }
 
-    private void copyToClipBoardTestEmail(){
+    private void copyToClipBoardTestEmail() {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("Test email", "open_nadmqks_user@tfbnw.net");
 
-        if(clipboard != null) {
+        if (clipboard != null) {
             clipboard.setPrimaryClip(clip);
             showToast("Test email copied to clipboard, you can paste it. Password: Kiwi2017");
         }
@@ -66,7 +66,7 @@ public class AuthorizationActivity extends BaseActivity implements Authorization
     }
 
     @OnClick(R.id.auth_login_action_layout)
-    public void onLoginClicked(){
+    public void onLoginClicked() {
         LoginManager
                 .getInstance()
                 .logInWithReadPermissions(this, permissionNeeds);
@@ -86,14 +86,14 @@ public class AuthorizationActivity extends BaseActivity implements Authorization
 
     @Override
     public void showLoading() {
-        if(progressDialog != null && !progressDialog.isShowing()){
+        if (progressDialog != null && !progressDialog.isShowing()) {
             progressDialog.show();
         }
     }
 
     @Override
     public void hideLoading() {
-        if(progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }

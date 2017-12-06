@@ -19,7 +19,7 @@ import ua.sng.kiwitest.view.fragments.BaseFragment;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private Unbinder uninder;
+    private Unbinder unBinder;
 
     protected BaseFragment currentFragment;
     protected BaseFragment previousFragment;
@@ -37,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         Annotation annotation = cls.getAnnotation(Layout.class);
         setContentView(((Layout) annotation).id());
-        uninder = ButterKnife.bind(this);
+        unBinder = ButterKnife.bind(this);
 
         fragmentManager = getSupportFragmentManager();
         currentFragment = getDefaultFragment();
@@ -115,8 +115,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        uninder.unbind();
-        uninder = null;
+        unBinder.unbind();
+        unBinder = null;
         super.onDestroy();
     }
 }

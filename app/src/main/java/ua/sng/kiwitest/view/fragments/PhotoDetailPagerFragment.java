@@ -42,7 +42,6 @@ public class PhotoDetailPagerFragment extends BaseFragment {
     @BindView(R.id.detail_view_pager)
     ViewPager photoViewPager;
 
-    private PhotosPagerAdapter photosPagerAdapter;
     private ArrayList<PhotoModel> photoModels;
     private int currentPosition;
 
@@ -72,7 +71,7 @@ public class PhotoDetailPagerFragment extends BaseFragment {
     }
 
     private void setupPhotosViewPager(){
-        photosPagerAdapter = new PhotosPagerAdapter(getChildFragmentManager(), getActivity(), photoModels);
+        PhotosPagerAdapter photosPagerAdapter = new PhotosPagerAdapter(getChildFragmentManager(), getActivity(), photoModels);
         photoViewPager.setAdapter(photosPagerAdapter);
 
         if(currentPosition < photoModels.size()){

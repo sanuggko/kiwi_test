@@ -3,6 +3,7 @@ package ua.sng.kiwitest.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
@@ -11,6 +12,7 @@ import butterknife.BindView;
 import ua.sng.kiwitest.R;
 import ua.sng.kiwitest.model.entities.album.PhotoModel;
 import ua.sng.kiwitest.utils.GlideApp;
+import ua.sng.kiwitest.utils.KiwiHelper;
 import ua.sng.kiwitest.utils.Layout;
 import ua.sng.kiwitest.view.activities.BaseActivity;
 
@@ -35,6 +37,18 @@ public class PhotoDetailFragment extends BaseFragment {
 
     @BindView(R.id.photo_detail_img)
     ImageView photoImage;
+
+    @BindView(R.id.photo_description)
+    TextView photoDescriptionTxt;
+
+    @BindView(R.id.photo_detail_date)
+    TextView photoCreateDateTxt;
+
+    @BindView(R.id.photo_item_likes_count)
+    TextView likesCount;
+
+    @BindView(R.id.photo_item_comments_count)
+    TextView commentsCount;
 
     private PhotoModel photoModel;
 
@@ -67,6 +81,30 @@ public class PhotoDetailFragment extends BaseFragment {
                         .fitCenter()
                         .into(photoImage);
             }
+
+            photoCreateDateTxt.setText(KiwiHelper.parseDate(photoModel.getCreatedTime()));
+
+            if (photoModel.getLikesDataModel() != null
+                    && photoModel.getLikesDataModel().getLikesSummary() != null) {
+
+                likesCount.setText(
+                        String.valueOf(
+                                photoModel
+                                        .getLikesDataModel()
+                                        .getLikesSummary()
+                                        .getTotalCount()));
+            }
+
+            if (photoModel.getCommentsDataModel() != null
+                    && photoModel.getCommentsDataModel().getCommentsSummary() != null) {
+
+                commentsCount.setText(
+                        String.valueOf(
+                                photoModel
+                                        .getCommentsDataModel()
+                                        .getCommentsSummary()
+                                        .getTotalCount()));
+            }
         }
     }
 
@@ -77,7 +115,7 @@ public class PhotoDetailFragment extends BaseFragment {
 
     @Override
     protected void inject() {
-        if(getActivity() != null){
+        if (getActivity() != null) {
             ((BaseActivity) getActivity())
                     .getApplicationComponent()
                     .inject(this);

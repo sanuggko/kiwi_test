@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import ua.sng.kiwitest.R;
 import ua.sng.kiwitest.model.entities.album.AlbumModel;
@@ -41,6 +42,9 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     @BindView(R.id.profile_albums_rv)
     RecyclerView albumsRV;
+
+    @BindString(R.string.no_internet_connection)
+    String noInternetConnectionMessage;
 
     @Inject
     ProfilePresenter presenter;
@@ -145,7 +149,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     @Override
     public void showNoConnectionMessage() {
-
+        showToast(noInternetConnectionMessage);
     }
 
     @Override

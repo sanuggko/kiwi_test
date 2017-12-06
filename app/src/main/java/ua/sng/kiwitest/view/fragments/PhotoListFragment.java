@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import ua.sng.kiwitest.R;
 import ua.sng.kiwitest.model.entities.album.PhotoModel;
@@ -44,6 +45,9 @@ public class PhotoListFragment extends BaseFragment implements PhotosView {
 
     @BindView(R.id.photos_rv)
     RecyclerView photosRV;
+
+    @BindString(R.string.no_internet_connection)
+    String noInternetConnectionMessage;
 
     @Inject
     PhotosPresenter presenter;
@@ -136,7 +140,7 @@ public class PhotoListFragment extends BaseFragment implements PhotosView {
 
     @Override
     public void showNoConnectionMessage() {
-
+        showToast(noInternetConnectionMessage);
     }
 
     @Override

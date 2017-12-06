@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity implements FragmentManager.OnBack
 
     private void setupDefaultValues(){
         fragmentManager.addOnBackStackChangedListener(this);
-        showFragment(R.id.main_fragment_container, getDefaultFragment(), false);
+        showFragment(R.id.main_fragment_container, getDefaultFragment(), false, true);
     }
 
     private void startAuthActivity(){

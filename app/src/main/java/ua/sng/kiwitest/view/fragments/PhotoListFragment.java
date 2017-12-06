@@ -85,9 +85,17 @@ public class PhotoListFragment extends BaseFragment implements PhotosView {
         photosRV.addItemDecoration(new ItemDecorationAlbumColumns(DpPxUtils.dpToPx(getActivity(), 10), 2));
         photosRV.setAdapter(photosAdapter);
 
-        photosAdapter.setItemClickListener(position -> {
+        photosAdapter.setItemClickListener(this::showDetailPhotoPager);
+    }
 
-        });
+    private void showDetailPhotoPager(int currentPosition){
+        if(getActivity() != null){
+            PhotoDetailPagerFragment photoDetailPagerFragment = PhotoDetailPagerFragment
+                    .newInstance(currentPosition, photoModels);
+
+            ((BaseActivity) getActivity())
+                    .showFragment(R.id.main_fragment_container, photoDetailPagerFragment, false, false);
+        }
     }
 
     @Override

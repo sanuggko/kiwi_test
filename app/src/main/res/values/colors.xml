@@ -8,5 +8,6 @@
     <color name="gray">#929292</color>
     <color name="label_bg">#3ce9e9e9</color>
     <color name="highlight_color">#494167b2</color>
+    <color name="almost_trans">#dc000000</color>
 
 </resources>

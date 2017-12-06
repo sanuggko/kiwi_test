@@ -49,7 +49,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return ((KiwiApplication) getApplication()).getApplicationComponent();
     }
 
-    public void showFragment(int containerViewId, BaseFragment fragment, boolean needToRefreshBackStack) {
+    public void showFragment(int containerViewId, BaseFragment fragment, boolean needToRefreshBackStack, boolean needToHidePrevious) {
         if (needToRefreshBackStack && fragmentManager.getBackStackEntryCount() > 0) {
             int indexToDelete = (fragment.getClass().getSimpleName()
                     .equals(fragmentManager.getBackStackEntryAt(0).getName())) ? 0 : 1;
@@ -68,7 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
-        if (previousFragment != null) {
+        if (previousFragment != null && needToHidePrevious) {
             fragmentTransaction.hide(previousFragment);
         }
 
@@ -83,7 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                                       long delay) {
 
         new Handler().postDelayed(() ->
-                showFragment(containerId, baseFragment, needToRefreshBackStack), delay);
+                showFragment(containerId, baseFragment, needToRefreshBackStack, true), delay);
     }
 
     protected void showFragmentWithoutBackStack(int containerViewId, BaseFragment fragment) {

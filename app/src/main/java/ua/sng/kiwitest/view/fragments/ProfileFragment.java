@@ -93,7 +93,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
             PhotoListFragment photoListFragment = PhotoListFragment.newInstance(albumId, albumTitle);
 
             ((BaseActivity) getActivity())
-                    .showFragment(R.id.main_fragment_container, photoListFragment, false);
+                    .showFragment(R.id.main_fragment_container, photoListFragment, false, true);
         }
 
     }

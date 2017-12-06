@@ -1,6 +1,9 @@
 package ua.sng.kiwitest.view.activities;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -41,12 +44,25 @@ public class AuthorizationActivity extends BaseActivity implements Authorization
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupDefaultValues();
+
+        copyToClipBoardTestEmail();
     }
 
     private void setupDefaultValues(){
         callbackManager = CallbackManager.Factory.create();
         progressDialog = KiwiViewUtils.generateProgressDialog(this);
         presenter.setView(this);
+    }
+
+    private void copyToClipBoardTestEmail(){
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Test email", "open_nadmqks_user@tfbnw.net");
+
+        if(clipboard != null) {
+            clipboard.setPrimaryClip(clip);
+            showToast("Test email copied to clipboard, you can paste it. Password: Kiwi2017");
+        }
+
     }
 
     @OnClick(R.id.auth_login_action_layout)
